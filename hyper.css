@@ -1,0 +1,87 @@
+/* VOXA hyper motion layer — SVG-driven effects layered on top of the storefront.
+   Everything here is decorative and is disabled under prefers-reduced-motion. */
+
+/* ---------- intro: logo draws itself, then the curtain wipes away ---------- */
+.hx-intro{position:fixed;inset:0;z-index:999;display:grid;place-items:center;align-content:center;gap:18px;background:#14231a;color:#f3f9e6;
+  animation:hx-wipe .6s cubic-bezier(.7,0,.2,1) 1.25s forwards}
+.hx-intro svg{width:min(26vw,132px);height:auto;overflow:visible}
+.hx-intro .b{fill:#203122;stroke:#c3f150;stroke-width:.7;stroke-dasharray:100;stroke-dashoffset:100;animation:hx-draw .7s ease-out forwards}
+.hx-intro .v{fill:#c3f150;fill-opacity:0;stroke:#c3f150;stroke-width:.8;stroke-linejoin:round;stroke-dasharray:100;stroke-dashoffset:100;
+  animation:hx-draw .75s cubic-bezier(.6,0,.3,1) .15s forwards,hx-fill .3s ease-out .8s forwards}
+.hx-intro .t{fill:#f3f9e6;opacity:0;transform-box:fill-box;transform-origin:50% 0;animation:hx-drop .35s cubic-bezier(.2,1.6,.4,1) .9s forwards}
+.hx-intro .vx{fill:#c3f150;opacity:0;animation:hx-vox .7s ease-out var(--w) forwards}
+.hx-intro b{font:600 15px/1 "IBM Plex Mono","Courier New",monospace;letter-spacing:.6em;padding-left:.6em;opacity:0;animation:hx-fade .4s ease-out .7s forwards}
+@keyframes hx-draw{to{stroke-dashoffset:0}}
+@keyframes hx-fill{to{fill-opacity:1}}
+@keyframes hx-fade{to{opacity:1}}
+@keyframes hx-drop{from{opacity:0;transform:translateY(-9px) scale(.4)}to{opacity:1;transform:none}}
+@keyframes hx-vox{0%{opacity:0;transform:translate(0,0)}25%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y))}}
+@keyframes hx-wipe{0%{clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}55%{clip-path:polygon(0 0,100% 0,100% 28%,0 72%)}
+  100%{clip-path:polygon(0 0,100% 0,100% 0,0 0);visibility:hidden}}
+
+/* ---------- energy pulses running along the existing wave lines ---------- */
+.hx-pulses{filter:drop-shadow(0 0 2.5px #d4ff7a)}
+.hx-pulses .hx-p,.catalogtop .catalogwave .hx-pulses .hx-p{stroke:#f2ffc4;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:7 93;
+  animation:hx-run var(--d,3s) linear var(--w,0s) infinite !important}
+.catalogwave .hx-pulses .hx-p{stroke-width:1.9;stroke-dasharray:5 95}
+@keyframes hx-run{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
+
+/* ---------- HUD around the hero machine ---------- */
+.hx-hud{position:absolute;left:-9%;top:-9%;width:118%;height:118%;pointer-events:none;overflow:visible;fill:none}
+.hx-back{z-index:-1}
+.hx-front{z-index:1;mix-blend-mode:screen}
+.hx-par{transform:translate(calc(var(--px,0)*10px),calc(var(--py,0)*7px));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.hx-par2{transform:translate(calc(var(--px,0)*-5px),calc(var(--py,0)*-4px));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.hx-ring{stroke:#c9f98a;stroke-opacity:.5;stroke-width:1;stroke-dasharray:.5 2;animation:hx-run 26s linear infinite}
+.hx-ring.rev{animation-direction:reverse;animation-duration:34s}
+.hx-comet{stroke:#f1ffc0;stroke-width:2.4;stroke-linecap:round;stroke-dasharray:11 89;filter:drop-shadow(0 0 4px #c3f150);animation:hx-run var(--d,5s) linear infinite}
+.hx-comet.rev{animation-direction:reverse}
+.hx-radar ellipse{stroke:#c3f150;stroke-width:1.2;transform-box:fill-box;transform-origin:center;opacity:0;animation:hx-radar 3.6s ease-out var(--w,0s) infinite}
+@keyframes hx-radar{0%{transform:scale(.25);opacity:.9}100%{transform:scale(1.25);opacity:0}}
+.hx-spark{fill:#e6ff9a;opacity:0;animation:hx-spark var(--d,3s) linear var(--w,0s) infinite}
+@keyframes hx-spark{0%{opacity:0;transform:translate(0,0)}12%{opacity:.95}100%{opacity:0;transform:translate(var(--x,0),-250px)}}
+.hx-br path{stroke:#dfffa0;stroke-width:2.4;stroke-linecap:square;stroke-dasharray:1;stroke-dashoffset:1;animation:hx-br .7s cubic-bezier(.6,0,.2,1) .2s forwards,hx-breathe 2.6s ease-in-out 1s infinite alternate}
+@keyframes hx-br{to{stroke-dashoffset:0}}
+@keyframes hx-breathe{to{stroke-opacity:.45}}
+.hx-ticks line{stroke:#c9f98a;stroke-opacity:.55;stroke-width:1}
+.hx-beam path{stroke:#eaffb0;stroke-width:1.6;filter:drop-shadow(0 0 5px #c3f150)}
+.hx-beam .hx-mark{fill:#eaffb0;stroke:none}
+.hx-beam text{fill:#eaffb0;stroke:none;font:600 11px "IBM Plex Mono","Courier New",monospace;letter-spacing:.1em}
+.hx-burst{stroke:#eaffb0;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.hx-flash .hx-burst{animation:hx-burst .75s cubic-bezier(.2,.7,.2,1)}
+.hx-flash .hx-br path{animation:hx-br .6s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes hx-burst{0%{opacity:.9;transform:scale(.15);stroke-width:7}100%{opacity:0;transform:scale(1.25);stroke-width:.5}}
+.product-stage.paused .hx-hud *,.product-stage.paused .hx-pulses .hx-p{animation-play-state:paused !important}
+
+/* ---------- product cards: rise in, border traces itself, scan sweep ---------- */
+.hx .card{position:relative}
+.hx .card.hx-c{opacity:0}
+.hx .card.hx-in{opacity:1;animation:hx-rise .7s cubic-bezier(.2,.8,.2,1) calc(var(--i,0)*70ms) backwards}
+@keyframes hx-rise{from{opacity:0;transform:translateY(30px) scale(.96);clip-path:inset(0 0 60% 0 round 14px)}to{opacity:1;transform:none;clip-path:inset(0 round 14px)}}
+.hx-trace{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2}
+.hx-trace rect{fill:none;stroke:#7dc22a;stroke-width:3.5;stroke-dasharray:100;stroke-dashoffset:100;transition:stroke-dashoffset .95s cubic-bezier(.6,0,.2,1)}
+.card:hover .hx-trace rect,.card:focus-within .hx-trace rect{stroke-dashoffset:0}
+.hx .cardvisual::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;z-index:1;opacity:0;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#8fd43a 30%,#d9ff8a 50%,#8fd43a 70%,transparent);box-shadow:0 0 14px 2px #a8f04a99}
+.hx .card:hover .cardvisual::before{animation:hx-sweep 1.1s cubic-bezier(.5,0,.3,1)}
+@keyframes hx-sweep{0%{top:0;opacity:0}12%,85%{opacity:1}100%{top:100%;opacity:0}}
+
+/* ---------- scroll extruder: a filament laid down as the page scrolls ---------- */
+.hx-rail{position:fixed;right:2px;top:0;bottom:0;width:20px;z-index:40;pointer-events:none}
+.hx-rail .track{position:absolute;inset:0;width:100%;height:100%}
+.hx-rail .track path{fill:none;vector-effect:non-scaling-stroke}
+.hx-rail .ghost{stroke:#9fb39155;stroke-width:1;stroke-dasharray:2 5}
+.hx-rail .fil{stroke:#6fae24;stroke-width:2.2;stroke-linejoin:round;filter:drop-shadow(0 0 3px #b9f15a);clip-path:inset(0 0 calc(100% - var(--p,0)*100%) 0)}
+.hx-rail .head{position:absolute;left:0;top:0;width:20px;height:26px;transform:translateY(calc(var(--p,0)*(100vh - 26px)))}
+.hx-rail .head .tip{animation:hx-tip .5s ease-in-out infinite alternate}
+@keyframes hx-tip{to{opacity:.35}}
+@media(max-width:900px){.hx-rail{display:none}}
+
+/* ---------- voxel field: an isometric wave of cubes that follows the pointer ---------- */
+.hx-voxel{position:relative;height:clamp(150px,22vw,230px);margin:44px 0 8px;border-radius:14px;overflow:hidden;background:#172419;isolation:isolate}
+.hx-voxel svg{display:block;width:100%;height:100%}
+.hx-voxel::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#172419 0,transparent 30%),linear-gradient(90deg,#172419,transparent 12%,transparent 88%,#172419)}
+
+@media(prefers-reduced-motion:reduce){
+  .hx-intro,.hx-rail,.hx-voxel,.hx-hud,.hx-pulses{display:none !important}
+}
