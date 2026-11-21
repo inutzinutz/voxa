@@ -9,15 +9,15 @@
     <p class="maker-kicker">VOXA PRINT STUDIO</p>
     <h1 id="maker-heading">วันนี้อยาก<br><em>พิมพ์อะไรขาย?</em></h1>
     <p class="intro">เริ่มจากของที่คนอยากได้ เลือกชิ้นงาน ดูไฟล์ที่จะพิมพ์ แล้วลองตั้งราคาขายของคุณเอง</p>
-    <div class="maker-actions"><a class="lime-link" href="#estimate">ลองคำนวณต้นทุน</a><a class="tour-link" href="#showroom">เดินชมเครื่อง 3D</a></div>
+    <div class="maker-actions"><button type="button" class="lime-link design-start" id="design-start">ลองใส่ชื่อของคุณ</button><a class="tour-link" id="estimate-link" href="#estimate">ลองคำนวณต้นทุน</a><a class="tour-link" href="#showroom">เดินชมเครื่อง 3D</a></div>
   </div>
   <figure class="featured-print"><img id="idea-photo" src="assets/prints/name-tag.webp" width="880" height="650" alt="พวงกุญแจ MILO พิมพ์ตัวอักษรนูนสองสี"><figcaption>ภาพจำลองจากไฟล์พิมพ์</figcaption></figure>
 </div>
 <div class="idea-choices" role="group" aria-label="เลือกชิ้นงาน"><button type="button" data-print="name-tag" aria-pressed="true"><img src="assets/prints/name-tag.webp" alt=""><span>ของขวัญสั่งชื่อ<strong>พวงกุญแจชื่อ</strong></span></button><button type="button" data-print="twist-vase" aria-pressed="false"><img src="assets/prints/twist-vase.webp" alt=""><span>ของแต่งบ้าน<strong>แจกันเกลียว</strong></span></button><button type="button" data-print="table-stand" aria-pressed="false"><img src="assets/prints/table-stand.webp" alt=""><span>ของใช้คาเฟ่<strong>ฐานป้ายตั้งโต๊ะ</strong></span></button></div>
 </section>
 <section class="workbench" id="estimate" aria-labelledby="idea-name">
-<div class="brief"><p class="maker-kicker">พิมพ์ไปขายใคร</p><h2 id="idea-name">พวงกุญแจชื่อ</h2><p id="pitch"></p><p id="build-note" class="print-note"></p>
-<div class="file-links"><a id="print-file" download>ดาวน์โหลด STL</a><a id="edit-file" download>ไฟล์แก้แบบ OpenSCAD</a></div></div>
+<div class="brief"><p class="maker-kicker">พิมพ์ไปขายใคร</p><h2 id="idea-name">พวงกุญแจชื่อ</h2><p id="pitch"></p><p id="build-note" class="print-note"></p><button type="button" id="edit-tag" class="edit-tag">ออกแบบพวงกุญแจของคุณ</button>
+<div class="file-links"><button type="button" class="edit-tag" id="custom-file" hidden>ดาวน์โหลด STL ชื่อนี้</button><a id="print-file" download>ดาวน์โหลด STL</a><a id="edit-file" download>ไฟล์แก้แบบ OpenSCAD</a></div></div>
 <div class="estimate"><div class="estimate-heading"><h3>ถ้าขายออเดอร์นี้ จะเหลือเท่าไร?</h3><p>ตัวเลขตั้งต้นเป็นสมมติฐาน ปรับตามใบเสนอราคาและข้อมูลจากโปรแกรมสไลซ์ของคุณ</p></div>
 <form id="cost-form" autocomplete="off"><div class="price-fields">
 <label>ราคาขายต่อชิ้น (บาท)<input name="price" type="number" min="0" max="1000000" step="any" required></label>
@@ -36,4 +36,12 @@
 <div id="walk" hidden><button type="button" data-walk="-1" aria-label="เดินถอยหลัง">−</button><button type="button" data-walk="1" aria-label="เดินไปข้างหน้า">+</button></div></div>
 <div class="controls"><div class="stations"><span class="striplabel">มุมมอง</span><button class="station active" data-view="front" aria-pressed="true"><svg><use href="#focus"/></svg>หน้าร้าน</button><button class="station" data-view="k3" aria-pressed="false">K3</button><button class="station" data-view="i8" aria-pressed="false">i8 Combo</button></div><button class="compare" id="compare-btn"><svg><use href="#compare"/></svg> เทียบสองรุ่น</button></div></section>
 <section class="collection"><div class="collection-heading"><div><span class="eng">THE COLLECTION</span><h2>เครื่องพิมพ์ในโชว์รูม</h2></div><a href="catalog.html#products">ดูแคตตาล็อกทั้งหมด</a></div><div class="cards" id="cards"></div></section></main><footer><a class="wordmark" href="#showroom">voxa</a><span>by 13 Store</span><a href="tel:0656946155">065-694-6155</a></footer>
+<dialog id="tag-studio" aria-labelledby="tag-title">
+<div class="sheet-head"><span class="eng">VOXA PRINT STUDIO</span><button type="button" id="tag-close" aria-label="ปิดห้องออกแบบ">×</button></div>
+<h2 id="tag-title">พวงกุญแจของคุณ</h2>
+<div class="tag-layout"><div class="tag-scene"><canvas id="tag-preview" width="800" height="510" role="img" aria-label="ภาพจำลองพวงกุญแจ"></canvas><span id="tag-size"></span></div>
+<div class="tag-tools"><label for="tag-name">ชื่อบนพวงกุญแจ</label><input type="text" id="tag-name" value="MILO" maxlength="60" autocomplete="off" spellcheck="false" aria-describedby="tag-help tag-error" dir="auto"><small id="tag-help">ไทย อังกฤษ หรือตัวเลข สูงสุด 16 ตัวอักษร</small><p id="tag-error" role="status"></p>
+<fieldset id="tag-palettes"><legend>คู่สีเส้นพิมพ์</legend></fieldset>
+<p class="tag-print-tip">พิมพ์ฐานสูง 2.8 มม. แล้วเปลี่ยนสีสำหรับชื่อที่นูนอีก 0.9 มม. ไฟล์ STL เก็บรูปทรง ส่วนสีเลือกในสไลเซอร์</p>
+<div class="tag-buttons"><button type="button" class="lime-link" id="tag-apply">ใช้แบบนี้กับออเดอร์</button><button type="button" class="tag-download" id="tag-download">ดาวน์โหลด STL ชื่อนี้</button></div></div></div></dialog>
 <dialog id="sheet"><div class="sheet-head"><span class="eng">VOXA / SHOWROOM</span><button id="close" aria-label="ปิดรายละเอียด">×</button></div><div id="details"></div></dialog><p id="status" role="status" aria-live="polite"></p><script src="data.js"></script><script src="room.js"></script><script type="module" src="ideas.js"></script></body></html>

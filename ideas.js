@@ -1,3 +1,4 @@
+import {openStudio,applied,download} from './tag-studio.js';
 const projects = {
   'name-tag': {
     name:'พวงกุญแจชื่อ', alt:'พวงกุญแจ MILO ตัวอักษรนูนในสามคู่สี',
@@ -36,7 +37,8 @@ function calculate() {
   }
   byId('balance').classList.toggle('loss',valid&&cost>total);
   byId('estimate-note').textContent=valid?'คิดจากการขายครบ '+n.quantity.toLocaleString('th-TH')+' ชิ้น รวมค่าธรรมเนียมตามที่กรอก ค่าจัดส่งและงานเสียเพิ่มได้ในค่าใช้จ่ายอื่น':'กรุณากรอกตัวเลขให้ครบ และใส่จำนวนขายเป็นจำนวนเต็มตั้งแต่ 1 ชิ้น';
-  const msg='สนใจพิมพ์'+projects[current].name+' ขาย'+(valid?' จำนวน '+n.quantity+' ชิ้น':'')+' รบกวนแนะนำระหว่าง K3 กับ i8 Combo พร้อมราคาเครื่องและวัสดุครับ';
+  const design=current==='name-tag'&&applied?' ชื่อ '+applied.name+' คู่สี'+applied.palette:'';
+  const msg='สนใจพิมพ์'+projects[current].name+design+' ขาย'+(valid?' จำนวน '+n.quantity+' ชิ้น':'')+' รบกวนแนะนำระหว่าง K3 กับ i8 Combo พร้อมราคาเครื่องและวัสดุครับ';
   byId('idea-quote').href='https://line.me/R/oaMessage/%40dji13store/?'+encodeURIComponent(msg);
 }
 function select(id) {
@@ -46,6 +48,19 @@ function select(id) {
   byId('idea-name').textContent=project.name;
   byId('pitch').textContent=project.pitch;byId('build-note').textContent=project.note;
   byId('print-file').href=base+'.stl';byId('edit-file').href=base+'.scad';
+  const isTag=id==='name-tag',custom=isTag&&applied;
+  byId('design-start').hidden=byId('edit-tag').hidden=!isTag;
+  byId('edit-tag').textContent=custom?'แก้ชื่อหรือคู่สี':'ออกแบบพวงกุญแจของคุณ';
+  byId('print-file').hidden=Boolean(custom);
+  byId('custom-file').hidden=!custom;
+  byId('edit-file').textContent=custom?'ไฟล์ต้นแบบ MILO (OpenSCAD)':'ไฟล์แก้แบบ OpenSCAD';
+  if(custom){
+    byId('idea-photo').src=applied.image;
+    byId('idea-photo').alt='แบบพวงกุญแจ '+applied.name+' สี'+applied.palette;
+    byId('idea-name').textContent='พวงกุญแจ '+applied.name;
+    byId('custom-file').textContent='ดาวน์โหลด STL ชื่อ '+applied.name;
+    byId('build-note').textContent='คู่สี'+applied.palette+' · ขนาด '+applied.artwork.width+' × 17 × 3.7 มม. เปลี่ยนสีเส้นที่ความสูง 2.8 มม. น้ำหนักและเวลาตั้งต้นเป็นของตัวอย่าง ปรับตามผลสไลซ์ของชื่อนี้ก่อนประเมินออเดอร์';
+  }
   const values=drafts.get(id)||{...project,filament:450,machine:5,fees:5};
   for(const field of form.elements){if(field.name)field.value=values[field.name]}
   document.querySelectorAll('[data-print]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.print===id)));
@@ -53,4 +68,7 @@ function select(id) {
 }
 form.addEventListener('input',calculate);form.addEventListener('submit',event=>event.preventDefault());
 document.querySelectorAll('[data-print]').forEach(button=>button.addEventListener('click',()=>select(button.dataset.print)));
+byId('design-start').onclick=byId('edit-tag').onclick=openStudio;
+byId('custom-file').onclick=()=>{if(applied)download(applied.artwork,applied.name)};
+document.addEventListener('tag-applied',()=>select('name-tag'));
 select('name-tag');
