@@ -1,7 +1,7 @@
 (() => {
   const $ = selector => document.querySelector(selector);
   const models = items.filter(p => p.id === 'k3' || p.id === 'i8');
-  const names = {front:'มุมหน้าร้าน',k3:'แท่น K3',i8:'แท่น SPARKX i8 Combo'};
+  const names = {front:'มุมโชว์รูมเสมือน',k3:'แท่น K3',i8:'แท่น SPARKX i8 Combo'};
   const modal = $('#sheet'), pan = $('#pan'), viewport = $('#viewport'), world = $('#world');
   let tour, place = 'front', noticeTimer, entering = false;
   const quote = p => 'https://line.me/R/oaMessage/%40dji13store/?' + encodeURIComponent('สนใจ '+p.name+' จากโชว์รูม VOXA ขอสอบถามราคาและการสั่งซื้อครับ');
@@ -16,12 +16,12 @@
   }
   function showModel(id) {
     const p = models.find(p => p.id === id);
-    $('#details').innerHTML = '<h2>'+p.name+'</h2><img class="spec-photo" src="assets/'+id+'-hero.png" alt="'+p.name+'"><p>'+p.note+'</p><table><tbody>'+Object.entries(p.specs).map(([k,v]) => '<tr><th scope="row">'+k+'</th><td>'+v+'</td></tr>').join('')+'</tbody></table><div class="actions"><a target="_blank" rel="noopener" href="'+quote(p)+'">สอบถามราคาทาง LINE</a><a href="tel:0656946155">โทร 13 Store</a></div>';
+    $('#details').innerHTML = '<h2 id="sheet-title">'+p.name+'</h2><img class="spec-photo" src="assets/'+id+'-hero.png" alt="'+p.name+'"><p>'+p.note+'</p><table><tbody>'+Object.entries(p.specs).map(([k,v]) => '<tr><th scope="row">'+k+'</th><td>'+v+'</td></tr>').join('')+'<tr><th scope="row">การรับประกัน</th><td>1 ปี ตามข้อมูลสินค้า</td></tr></tbody></table><div class="actions"><a target="_blank" rel="noopener" href="'+quote(p)+'">สอบถามราคาทาง LINE</a><a href="tel:0656946155">โทร 13 Store</a></div>';
     if (!modal.open) modal.showModal();
   }
   function compare() {
     const [a,b] = models;
-    $('#details').innerHTML = '<h2>เทียบ K3 กับ i8 Combo</h2><table><thead><tr><th>ข้อมูล</th><th>K3</th><th>i8 Combo</th></tr></thead><tbody>'+[...Object.keys(a.specs),'จุดเด่น'].map(k=>'<tr><th scope="row">'+k+'</th><td>'+(a.specs[k]||a.note)+'</td><td>'+(b.specs[k]||b.note)+'</td></tr>').join('')+'</tbody></table><div class="actions"><a target="_blank" rel="noopener" href="https://line.me/R/ti/p/%40dji13store">ปรึกษา 13 Store</a></div>';
+    $('#details').innerHTML = '<h2 id="sheet-title">เทียบ K3 กับ i8 Combo</h2><table><thead><tr><th>ข้อมูล</th><th>K3</th><th>i8 Combo</th></tr></thead><tbody>'+[...Object.keys(a.specs),'จุดเด่น'].map(k=>'<tr><th scope="row">'+k+'</th><td>'+(a.specs[k]||a.note)+'</td><td>'+(b.specs[k]||b.note)+'</td></tr>').join('')+'</tbody></table><div class="actions"><a target="_blank" rel="noopener" href="https://line.me/R/ti/p/%40dji13store">ปรึกษา 13 Store</a></div>';
     modal.showModal();
   }
   function station(id) {
@@ -45,7 +45,7 @@
         tour=createTour(world,showModel,()=>{leave();notify('การแสดงผล 3D หยุดชั่วคราว ดูเครื่องผ่านจุดบนภาพได้ครับ');tour=null;world.replaceChildren()});
       }
       world.hidden=false; pan.hidden=true; $('#walk').hidden=false;
-      tour.go(id);station(id);btn.lastElementChild.textContent='กลับมุมภาพถ่าย';
+      tour.go(id);station(id);btn.lastElementChild.textContent='กลับภาพโชว์รูม';
       $('#view-hint').textContent=id==='front'?'ลากเพื่อหันมอง · แตะเครื่องเพื่อดูสเปก':'ลากหมุนรอบเครื่อง 360° · กด + หรือ − เพื่อซูม';
       const labels=id==='front'?['เดินถอยหลัง','เดินไปข้างหน้า']:['ซูมออก','ซูมเข้า'];
       document.querySelectorAll('[data-walk]').forEach((button,i)=>button.setAttribute('aria-label',labels[i]));
