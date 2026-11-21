@@ -46,7 +46,9 @@
       }
       world.hidden=false; pan.hidden=true; $('#walk').hidden=false;
       tour.go(id);station(id);btn.lastElementChild.textContent='กลับมุมภาพถ่าย';
-      $('#view-hint').textContent='ลากเพื่อหันมอง · แตะเครื่องเพื่อดูสเปก';
+      $('#view-hint').textContent=id==='front'?'ลากเพื่อหันมอง · แตะเครื่องเพื่อดูสเปก':'ลากหมุนรอบเครื่อง 360° · กด + หรือ − เพื่อซูม';
+      const labels=id==='front'?['เดินถอยหลัง','เดินไปข้างหน้า']:['ซูมออก','ซูมเข้า'];
+      document.querySelectorAll('[data-walk]').forEach((button,i)=>button.setAttribute('aria-label',labels[i]));
     } catch(err) {
       console.error(err);leave();
       if(id!=='front')showModel(id);
